@@ -234,11 +234,11 @@ public class MySQLDBConnection implements DBConnection {
 				String imageUrl = restaurant.getImageUrl();
 				String url = restaurant.getUrl();
 				JSONObject obj = restaurant.toJSONObject();
-				//if (visited.contains(businessId)) {
-				//	obj.put("is_visited", true);
-				//} else {
-				//	obj.put("is_visited", false);
-				//}
+				if (visited.contains(businessId)) {
+					obj.put("is_visited", true);
+				} else {
+					obj.put("is_visited", false);
+				}
 				String sql = "INSERT IGNORE INTO restaurants VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 				PreparedStatement statement = conn.prepareStatement(sql);
 				statement.setString(1, businessId);
