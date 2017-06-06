@@ -83,7 +83,7 @@ public class MongoDBConnection implements DBConnection {
 	}
 
 	@Override
-	public JSONArray recommendRestaurants(String userId) {
+	public JSONArray recommendRestaurants(String userId, double lat, double lon) {
 		try {
 
 			Set<String> visitedRestaurants = getVisitedRestaurants(userId);
@@ -93,7 +93,7 @@ public class MongoDBConnection implements DBConnection {
 			}
 			Set<String> allRestaurants = new HashSet<>();
 			for (String category : allCategories) {
-				Set<String> set = getBusinessId(category);
+				Set<String> set = getBusinessId(category, lat, lon);
 				allRestaurants.addAll(set);
 			}
 			Set<JSONObject> diff = new HashSet<>();
@@ -131,7 +131,7 @@ public class MongoDBConnection implements DBConnection {
 	}
 
 	@Override
-	public Set<String> getBusinessId(String category) {
+	public Set<String> getBusinessId(String category, double lat, double lon) {
 		Set<String> set = new HashSet<>();
 		// similar to LIKE %category% in MySQL
 		FindIterable<Document> iterable = db.getCollection("restaurants").find(regex("categories", category));

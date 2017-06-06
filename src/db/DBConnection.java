@@ -53,7 +53,7 @@ public interface DBConnection {
 	 * @param userId
 	 * @return
 	 */
-	public JSONArray recommendRestaurants(String userId);
+	public JSONArray recommendRestaurants(String userId, double lat, double lon);
 
 	/**
 	 * Gets categories based on business id
@@ -69,7 +69,7 @@ public interface DBConnection {
 	 * @param category
 	 * @return
 	 */
-	public Set<String> getBusinessId(String category);
+	public Set<String> getBusinessId(String category, double lat, double lon);
 
 	/**
 	 * Search restaurants near a geolocation.

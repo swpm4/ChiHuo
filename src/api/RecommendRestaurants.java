@@ -48,8 +48,17 @@ public class RecommendRestaurants extends HttpServlet {
 
 		JSONArray array = null;
 
-		String userId = (String) session.getAttribute("user");
-		array = connection.recommendRestaurants(userId);
+		//String userId = (String) session.getAttribute("user");
+		//array = connection.recommendRestaurants(userId);
+		
+		if (request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lon")) {
+	
+			String userId = (String) session.getAttribute("user");
+			//String userId = request.getParameter("user_id");
+			double lat = Double.parseDouble(request.getParameter("lat"));
+			double lon = Double.parseDouble(request.getParameter("lon"));
+			array = connection.recommendRestaurants(userId, lat, lon);
+		}
 
 		RpcParser.writeOutput(response, array);
 	}

@@ -53,6 +53,7 @@ public class SearchRestaurants extends HttpServlet {
 			// term is null or empty by default
 			String term = request.getParameter("term");
 			String userId = (String) session.getAttribute("user");
+			//String userId = request.getParameter("user_id");
 			//String userId = "1111";
 			double lat = Double.parseDouble(request.getParameter("lat"));
 			double lon = Double.parseDouble(request.getParameter("lon"));

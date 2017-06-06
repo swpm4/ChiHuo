@@ -362,7 +362,7 @@ function loadRecommendedRestaurants() {
 
   // The request parameters
   var url = './recommendation';
-  var params = 'user_id=' + user_id;
+  var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
   var req = JSON.stringify({});
   
   // display loading message

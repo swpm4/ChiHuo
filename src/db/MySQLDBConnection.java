@@ -130,7 +130,7 @@ public class MySQLDBConnection implements DBConnection {
 	}
 
 	@Override
-	public JSONArray recommendRestaurants(String userId) {
+	public JSONArray recommendRestaurants(String userId, double lat, double lon) {
 		try {
 			if (conn == null) {
 				return null;
@@ -143,7 +143,7 @@ public class MySQLDBConnection implements DBConnection {
 			}
 			Set<String> allRestaurants = new HashSet<>();//step 3
 			for (String category : allCategories) {
-				Set<String> set = getBusinessId(category);
+				Set<String> set = getBusinessId(category, lat, lon);
 				allRestaurants.addAll(set);
 			}
 			Set<JSONObject> diff = new HashSet<>();//step 4
@@ -189,14 +189,23 @@ public class MySQLDBConnection implements DBConnection {
 	}
 
 	@Override
-	public Set<String> getBusinessId(String category) {
+	public Set<String> getBusinessId(String category, double lat, double lon) {
 		Set<String> set = new HashSet<>();
 		try {
 			// if category = Chinese, categories = Chinese, Korean, Japanese,
 			// it's a match
-			String sql = "SELECT business_id from restaurants WHERE categories LIKE ?";
+			double latdown = lat - 0.2;
+			double latup = lat + 0.2;
+			double londown = lon - 0.2;
+			double lonup = lon + 0.2;
+
+			String sql = "SELECT business_id FROM restaurants WHERE (categories LIKE ? ) AND (longitude BETWEEN ? AND ?) AND (latitude BETWEEN ? AND ?)";
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, "%" + category + "%");
+			statement.setDouble(4, latdown);
+			statement.setDouble(5, latup);
+			statement.setDouble(2, londown);
+			statement.setDouble(3, lonup);
 			ResultSet rs = statement.executeQuery();
 			while (rs.next()) {
 				String businessId = rs.getString("business_id");
